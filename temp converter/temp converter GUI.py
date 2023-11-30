@@ -54,5 +54,3 @@ class temp_converter(tk.Tk):
 if __name__ == '__main__':
     app = temp_converter()
     app.mainloop()
-    app.geometry('1000x1000')
-    app.resizable(1,1)
