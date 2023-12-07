@@ -11,7 +11,9 @@ class temp_converter(tk.Tk):
         self.settings = {'padx': 10, 'pady': 10}
         self.title("temp converter")
 
-        self.convert_btn = tk.Button(self, text="convert", command=lambda: self.convert_clicked(self.temp_in.get(), self.unit_dropdown.get(), self.unit_dropdown2.get()))
+        self.convert_btn = tk.Button(self,
+                                     text="convert",
+                                     command=self.convert_clicked)
         self.convert_btn.config(bg="red")
 
         self.result_label = tk.Label(self, text='⊙▂⊙')
@@ -45,8 +47,12 @@ class temp_converter(tk.Tk):
         self.result_label.grid(row=4, column=1, sticky="W", **self.settings)
         self.convert_btn.grid(row=5, column=0, **self.settings)
 
-    def convert_clicked(self, Ptemp, Punit_from, Punit_to):
+    def convert_clicked(self):
+        Ptemp = float(self.temp_in.get())
+        Punit_from = self.unit_dropdown.get()
+        Punit_to = self.unit_dropdown2.get()
         new = temperature_converter(Ptemp, Punit_from, Punit_to)
+        print(new)
         self.result_label.config(text=new)
 
 
@@ -54,3 +60,4 @@ class temp_converter(tk.Tk):
 if __name__ == '__main__':
     app = temp_converter()
     app.mainloop()
+
