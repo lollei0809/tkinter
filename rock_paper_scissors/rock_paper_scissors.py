@@ -1,3 +1,5 @@
+import random
+
 RULES = {'rps': {'rock': ['scissors'],
                  'paper': ['rock'],
                  'scissors': ['paper']
@@ -13,19 +15,135 @@ RULES = {'rps': {'rock': ['scissors'],
 
 
 class PlayerObject:
-    def __init__(self, name, rules=None):
-        if rules is None:
-            rules = RULES['rps']
-        self.name = name.lower()
-        self.rules = rules
+    rules = RULES['rps']
+    allowable_objects = list(rules.keys())
+
+#data structures not in constuctor are class atribtes and are the same for every instance
+    def __init__(self, name):
+        # if rules is None:
+        #     rules = RULES['rps']
+        # PlayerObject.set_rules(rules)
+        # self.rules=rules
+        name = name.lower()
+        if name not in self.rules.keys():
+            raise ValueError("name must be valid object")
+        else:
+            self.name = name
+
+    @classmethod
+    def random_object(cls):
+        object_name = random.choice(cls.allowable_objects)
+        return PlayerObject(object_name)
+
+    @classmethod
+    def set_rules(cls, choice='rpsls'):
+        cls.rules = RULES[choice]
+        cls.allowable_objects = list(cls.rules.keys())
 
     def __repr__(self):
         return f'PlayerObject({self.name})'
 
-    def __gt__(self,other): # gt sets greater than
+    def __gt__(self, other):  # gt sets greater than: return true if in the list of objects it can beat
         return other.name in self.rules[self.name]
 
     def __eq__(self, other):
         return self.name == other.name
 
 
+
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.score = 0
+        self.current_object = None
+
+    def reset_object(self):
+        self.current_object = None
+
+    def win_round(self):
+        self.score += 1
+
+    def __repr__(self):
+        return f'name: {self.name}\nscore: {self.score}\ncurrent object: {self.current_object}'
+
+
+class Human(Player):
+    def choose_object(self, choice):
+        self.current_object = PlayerObject(choice)
+
+
+class Computer(Player):
+    def __init__(self):
+        super().__init__("Computer")
+
+    def choose_object(self):
+        self.current_object = PlayerObject.random_object()
+
+class Game:
+
+    def __init__(self):
+        self.current_round = 0
+        self.round_result = None
+        self.round_winner = None
+        self.players = []
+        self.max_rounds = 0
+
+    def add_human_player(self, name):
+        self.players.append(Human(name))
+
+    def add_computer_player(self):
+        computer = Computer()
+        self.players.append(computer)
+
+    def set_max_rounds(self, num):
+        if isinstance(num, int):
+            self.max_rounds = num
+        else:
+            raise ValueError("max rounds must be an integer")
+
+    def find_winner(self,i1,i2):
+        if self.players[i1].current_object > self.players[i2].current_object:
+            self.round_result = "WON"
+            self.round_winner = self.players[i1]
+            self.players[i1].score += 1
+        elif self.players[i2].current_object> self.players[i1].current_object:
+            self.round_result = "WON"
+            self.round_winner = self.players[i2]
+            self.players[i2].score += 1
+        else:
+            self.round_result = "DRAW"
+        self.max_rounds -= 1
+
+    def next_round(self):
+        self.current_round += 1
+        self.round_result = None
+        self.round_winner = None
+        for player in self.players:
+            player.reset_object()
+
+    def is_finished(self):
+        if self.current_round >= self.max_rounds:
+            return True
+
+    def reset(self):
+        self.current_round = 0
+        for player in self.players:
+            player.score = 0
+
+    def report_round(self):
+        return f'{self.players[0].name} chose {self.players[0].current_object}\n{self.players[1].name} chose {self.players[1].current_object}'
+        if self.round_result == 'WON':
+            return f'round won by {self.round_winner}'
+        else:
+            return 'round is a draw'
+
+    def report_score(self):
+        return f'{self.players[0].name}: {self.players[0].score} {self.players[1].name}: {self.players[1].score}'
+
+    def report_winner(self):
+        if self.players[0].score > self.players[1].score:
+            return f'{self.players[0].name} won overall'
+        elif self.players[1].score > self.players[0].score:
+            return f'{self.players[1].name} won overall'
+        else:
+            return 'draw overall'
