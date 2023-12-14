@@ -18,7 +18,7 @@ class PlayerObject:
     rules = RULES['rps']
     allowable_objects = list(rules.keys())
 
-#data structures not in constuctor are class atribtes and are the same for every instance
+    # data structures not in constuctor are class atribtes and are the same for every instance
     def __init__(self, name):
         # if rules is None:
         #     rules = RULES['rps']
@@ -50,7 +50,6 @@ class PlayerObject:
         return self.name == other.name
 
 
-
 class Player:
     def __init__(self, name):
         self.name = name
@@ -79,6 +78,7 @@ class Computer(Player):
     def choose_object(self):
         self.current_object = PlayerObject.random_object()
 
+
 class Game:
 
     def __init__(self):
@@ -101,12 +101,12 @@ class Game:
         else:
             raise ValueError("max rounds must be an integer")
 
-    def find_winner(self,i1,i2):
+    def find_winner(self, i1, i2):
         if self.players[i1].current_object > self.players[i2].current_object:
             self.round_result = "WON"
             self.round_winner = self.players[i1]
             self.players[i1].score += 1
-        elif self.players[i2].current_object> self.players[i1].current_object:
+        elif self.players[i2].current_object > self.players[i1].current_object:
             self.round_result = "WON"
             self.round_winner = self.players[i2]
             self.players[i2].score += 1
@@ -131,11 +131,12 @@ class Game:
             player.score = 0
 
     def report_round(self):
-        return f'{self.players[0].name} chose {self.players[0].current_object}\n{self.players[1].name} chose {self.players[1].current_object}'
+        message = f"{self.players[0].name} chose {self.players[0].current_object.name} \n{self.players[1].name} chose {self.players[1].current_object.name}"
         if self.round_result == 'WON':
-            return f'round won by {self.round_winner}'
+            message1 = f'round won by {self.round_winner.name}'
         else:
-            return 'round is a draw'
+            message1 = 'round is a draw'
+        return message, message1
 
     def report_score(self):
         return f'{self.players[0].name}: {self.players[0].score} {self.players[1].name}: {self.players[1].score}'
@@ -147,3 +148,13 @@ class Game:
             return f'{self.players[1].name} won overall'
         else:
             return 'draw overall'
+
+
+if __name__ == "__main__":
+    game = Game()
+    game.add_human_player('lolly1')
+    game.players[0].choose_object('scissors')
+    game.add_human_player('lolly2')
+    game.players[1].choose_object('paper')
+    game.find_winner(0, 1)
+    print("\n".join(game.report_round()))
