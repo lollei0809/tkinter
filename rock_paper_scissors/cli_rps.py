@@ -1,4 +1,4 @@
-from game_objects import Game, PlayerObject, ComputerPlayer
+from rock_paper_scissors import Game, PlayerObject, ComputerPlayer
 
 
 # Command Line Interface - gives prompts to run the game from the Command line
