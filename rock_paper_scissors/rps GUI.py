@@ -41,11 +41,11 @@ class Menu(tk.Frame):
         self.player2_name = tk.StringVar()
         self.player2_name_entry = tk.Entry(self, width=25, textvariable=self.player2_name)
 
-        self.human_player1_btn = tk.Button(self, text="Human", command=self.human_opponent)
-        self.computer_player1_btn = tk.Button(self, text="computer", command=self.computer_opponent)
+        self.human_player1_btn = tk.Button(self, text="Human", command=self.human_player1)
+        self.computer_player1_btn = tk.Button(self, text="computer", command=self.computer_player1)
 
-        self.human_player2_btn = tk.Button(self, text="Human", command=self.human_opponent)
-        self.computer_player2_btn = tk.Button(self, text="computer", command=self.computer_opponent)
+        self.human_player2_btn = tk.Button(self, text="Human", command=self.human_player2)
+        self.computer_player2_btn = tk.Button(self, text="computer", command=self.human_player2)
 
         self.name_label = tk.Label(self, text="opponent name:")
 
@@ -82,8 +82,8 @@ class Menu(tk.Frame):
         self.game_app.game_frame.spock_btn.grid_remove()
 
     def human_player1(self):
-        self.name_label.grid(row=2, column=3, **self.settings)
-        self.name_entry.grid(row=2, column=4, **self.settings)
+        self.player1_name.grid(row=2, column=3, **self.settings)
+        self.player1_name_entry.grid(row=2, column=4, **self.settings)
 
     def computer_player1(self):
         self.player1_name.grid_forget()
@@ -91,13 +91,12 @@ class Menu(tk.Frame):
 
 
     def human_player2(self):
-        self.name_label.grid(row=2, column=3, **self.settings)
-        self.name_entry.grid(row=2, column=4, **self.settings)
+        self.player2_name.grid(row=3, column=3, **self.settings)
+        self.player2_name_entry.grid(row=3, column=4, **self.settings)
 
     def computer_player2(self):
-        self.name_label.grid_forget()
-        self.name_entry.grid_forget()
-
+        self.player2_name.grid_forget()
+        self.player2_name_entry.grid_forget()
 
 class Game(tk.Frame):
     def __init__(self, game_app):
