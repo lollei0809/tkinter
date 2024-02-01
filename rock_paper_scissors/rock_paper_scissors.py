@@ -79,7 +79,7 @@ class ComputerPlayer(Player):
         self.current_object = PlayerObject.random_object()
 
 
-class Game:
+class Game1:
 
     def __init__(self):
         self.current_round = 0
@@ -152,7 +152,7 @@ class Game:
 
 
 if __name__ == "__main__":
-    game = Game()
+    game = Game1()
     game.set_max_rounds(3)
     game.add_human_player('lolly1')
     game.players[0].choose_object('scissors')
