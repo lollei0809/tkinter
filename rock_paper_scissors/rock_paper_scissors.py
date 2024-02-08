@@ -18,7 +18,7 @@ class PlayerObject:
     rules = RULES['rps']
     allowable_objects = list(rules.keys())
 
-    # data structures not in constuctor are class atribtes and are the same for every instance
+    # data structures not in constructor are class attributes and are the same for every instance
     def __init__(self, name):
         # if rules is None:
         #     rules = RULES['rps']
